@@ -38,9 +38,19 @@ services:
       APP_DOMAIN: '${DOMAIN_APP}'
       APP_URL: '${HTTP_PROTOCOL}://${DOMAIN_APP}'
 
+      DB_CONNECTION: 'pgsql'
+      DB_HOST: postgres-app
+      DB_PORT: '5432'
       DB_DATABASE: '${POSTGRES_DB}'
       DB_USERNAME: '${POSTGRES_USER}'
       DB_PASSWORD: '${POSTGRES_PASSWORD}'
+
+      MEMCACHED_HOST: memcached
+
+      REDIS_CLIENT: 'phpredis'
+      REDIS_HOST: redis-queue
+      REDIS_PASSWORD: null
+      REDIS_PORT: 6379
 
       SOCKET_APP_ID: 'app-id'
       SOCKET_APP_KEY: 'app-key'
@@ -54,6 +64,8 @@ services:
 
       MAIL_MAILER: 'smtp'
       MAIL_ENCRYPTION: null
+
+
 
     deploy:
       resources:

@@ -90,9 +90,6 @@ COPY ./docker/docker-php-queue-entrypoint.sh /run/docker-php-queue-entrypoint.sh
 RUN chown www-user:www-user /run/docker-php-octane-entrypoint.sh && chmod +x /run/docker-php-octane-entrypoint.sh; \
     chown www-user:www-user /run/docker-php-queue-entrypoint.sh && chmod +x /run/docker-php-queue-entrypoint.sh
 
-RUN /bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)" \
-
-
 USER www-user:www-user
 
 EXPOSE 8000
