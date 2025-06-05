@@ -1,0 +1,10 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name ${DOMAIN_APP} www.${DOMAIN_APP};
+
+    access_log /var/log/nginx/php_access.log access;
+
+    include /etc/nginx/includes/*php.conf;
+}

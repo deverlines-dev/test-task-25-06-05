@@ -1,0 +1,87 @@
+services:
+
+  nginx:
+    extends:
+      file: docker-compose.services.yml
+      service: nginx
+    ports:
+      - '6001:6001'
+    volumes:
+      - ./docker/nginx/etc/nginx/templates-local:/etc/nginx/templates
+    depends_on:
+      - php
+      - soketi
+
+  php:
+    extends:
+      file: docker-compose.services.yml
+      service: php
+    depends_on:
+      - postgres-app
+      - memcached
+    # entrypoint: /run/docker-php-octane-entrypoint.sh
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+
+  php-queue:
+    extends:
+      file: docker-compose.services.yml
+      service: php-queue
+    depends_on:
+      - postgres-app
+      - memcached
+      - redis-queue
+    # entrypoint: /run/docker-php-queue-entrypoint.sh
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+
+  node:
+    extends:
+      file: docker-compose.services.yml
+      service: node
+    ports:
+      - '5173:5173'
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+
+  postgres-app:
+    extends:
+      file: docker-compose.services.yml
+      service: postgres-app
+    ports:
+      - '5432:5432'
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+
+  memcached:
+    extends:
+      file: docker-compose.services.yml
+      service: memcached
+
+  redis-queue:
+    extends:
+      file: docker-compose.services.yml
+      service: redis-queue
+
+  soketi:
+    extends:
+      file: docker-compose.services.yml
+      service: soketi
+    environment:
+      SOKETI_DEBUG: '1'
+      SOKETI_METRICS_SERVER_PORT: '9601'
+    depends_on:
+      - redis-soketi
+
+  redis-soketi:
+    extends:
+      file: docker-compose.services.yml
+      service: redis-soketi
