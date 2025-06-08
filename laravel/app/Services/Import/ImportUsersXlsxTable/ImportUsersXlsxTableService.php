@@ -5,7 +5,6 @@ namespace App\Services\Import\ImportUsersXlsxTable;
 use App\Events\Broadcasts\UserImportRowsCreatedEvent;
 use App\Services\Import\ImportXlsxService;
 use Exception;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Log\LogManager;
 use Illuminate\Redis\RedisManager;
@@ -23,8 +22,7 @@ readonly class ImportUsersXlsxTableService
         private ImportUsersXlsxTableValueValidatorService $tableValueValidatorService,
         private DatabaseManager $db,
         private LogManager $log,
-        private RedisManager $redis,
-        private Dispatcher $dispatcher
+        private RedisManager $redis
     )
     {
 
