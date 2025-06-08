@@ -13,7 +13,7 @@ return new class extends Migration
             $table->bigInteger('ext_id');
 
             $table->string('name');
-            $table->date('date');
+            $table->date('date'); // @todo возможно добавить индекс
 
             $table->timestamp('created_at')->useCurrent();
         });
