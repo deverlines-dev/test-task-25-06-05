@@ -2,10 +2,14 @@
 
 namespace App\Services\Import\ImportUsersXlsxTable;
 
+use App\Events\Broadcasts\UserImportRowsCreatedEvent;
 use App\Services\Import\ImportXlsxService;
 use Exception;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Log\LogManager;
+use Illuminate\Redis\RedisManager;
+use Illuminate\Support\Str;
 use OpenSpout\Common\Entity\Cell;
 use OpenSpout\Common\Entity\Row;
 use OpenSpout\Common\Exception\IOException;
@@ -18,7 +22,9 @@ readonly class ImportUsersXlsxTableService
         private ImportUsersXlsxTableValidatorService $tableValidatorService,
         private ImportUsersXlsxTableValueValidatorService $tableValueValidatorService,
         private DatabaseManager $db,
-        private LogManager $log
+        private LogManager $log,
+        private RedisManager $redis,
+        private Dispatcher $dispatcher
     )
     {
 
@@ -31,6 +37,8 @@ readonly class ImportUsersXlsxTableService
      */
     public function import(string $path): void
     {
+        $uuid = Str::uuid()->toString();
+
         $console = new ConsoleOutput();
         $consoleMessageSection = $console->section();
         $consoleTimeSection = $console->section();
@@ -96,6 +104,14 @@ readonly class ImportUsersXlsxTableService
             $consoleTimeSection->overwrite("time: " . (hrtime(true) - $timeExecution) / 1e+9 . ' sec');
             $consoleMemorySection->overwrite("memory: " . memory_get_usage() / 1024 / 1024 . " / " . memory_get_peak_usage() / 1024 / 1024 . ' mb');
             $consoleCountSection->overwrite("saving: $countSavingItems ok, $countContinueItems continue, $countTotalItems total");
+
+            $key = now()->format('Y_m_d_H_i_s_u');
+            $this->redis->connection('queue')->set("import_status:$uuid:$key", $countTotalItems);
+
+            event(new UserImportRowsCreatedEvent(
+                uuid: $uuid,
+                rows: $countTotalItems
+            ));
         }
     }
 

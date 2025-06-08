@@ -10,4 +10,16 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    server: {
+        host: "0.0.0.0",
+        origin: "http://localhost:5173",
+        hmr: {
+            host: "localhost",
+        },
+        strictPort: true,
+        cors: {
+            origin: "*",
+            credentials: true,
+        },
+    },
 });

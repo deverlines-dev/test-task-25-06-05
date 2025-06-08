@@ -12,6 +12,7 @@ services:
       - ./docker/nginx/etc/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/nginx/etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
       - ./docker/nginx/etc/nginx/includes/php.conf:/etc/nginx/includes/php.conf
+      - ./docker/nginx/etc/nginx/includes/soketi.conf:/etc/nginx/includes/soketi.conf
     environment:
       TZ: 'Europe/Moscow'
       DOMAIN_APP: '${DOMAIN_APP}'
@@ -48,9 +49,10 @@ services:
       MEMCACHED_HOST: memcached
 
       REDIS_CLIENT: 'phpredis'
-      REDIS_HOST: redis-queue
-      REDIS_PASSWORD: null
-      REDIS_PORT: 6379
+
+      REDIS_QUEUE_HOST: redis-queue
+      REDIS_QUEUE_PASSWORD: null
+      REDIS_QUEUE_PORT: 6379
 
       SOCKET_APP_ID: 'app-id'
       SOCKET_APP_KEY: 'app-key'
@@ -64,9 +66,6 @@ services:
 
       MAIL_MAILER: 'smtp'
       MAIL_ENCRYPTION: null
-
-
-
     deploy:
       resources:
         limits:

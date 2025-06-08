@@ -160,6 +160,15 @@ return [
             'database' => env('REDIS_DB', '0'),
         ],
 
+        'queue' => [
+            'url' => env('REDIS_QUEUE_URL'),
+            'host' => env('REDIS_QUEUE_HOST', '127.0.0.1'),
+            'username' => env('REDIS_QUEUE_USERNAME'),
+            'password' => env('REDIS_QUEUE_PASSWORD'),
+            'port' => env('REDIS_QUEUE_PORT', '6379'),
+            'database' => env('REDIS_QUEUE_DB', '0'),
+        ],
+
         'cache' => [
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
@@ -170,5 +179,4 @@ return [
         ],
 
     ],
-
 ];

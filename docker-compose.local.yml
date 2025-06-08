@@ -70,6 +70,8 @@ services:
     extends:
       file: docker-compose.services.yml
       service: redis-queue
+    ports:
+      - '6379:6379'
 
   soketi:
     extends:
@@ -85,3 +87,5 @@ services:
     extends:
       file: docker-compose.services.yml
       service: redis-soketi
+    ports:
+      - '63792:6379'
