@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('user_imports', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('ext_id');
+            $table->bigInteger('ext_id')->unsigned();
 
             $table->string('name');
             $table->date('date'); // @todo возможно добавить индекс
